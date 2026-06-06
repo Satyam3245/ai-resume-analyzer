@@ -1,36 +1,197 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI Resume Analyzer
 
-## Getting Started
+An AI-powered Resume Analyzer built with **Next.js**, **TypeScript**, **Gemini**, and **PDF processing** that helps job seekers evaluate their resumes, identify weaknesses, and improve their chances of passing Applicant Tracking Systems (ATS).
 
-First, run the development server:
+## 🚀 Features
+
+* 📄 Upload PDF resumes
+* 🔍 Extract text from PDF files
+* 🤖 AI-powered resume analysis using Gemini
+* 📊 ATS-style resume scoring
+* ✅ Identify resume strengths
+* ⚠️ Highlight weaknesses and missing information
+* 💡 Generate actionable improvement suggestions
+* 🎨 Modern and responsive UI
+* 🔒 Type-safe development with TypeScript
+
+---
+
+## 🖼️ Screenshots
+
+### Home Page
+
+![Home Page](./public/images/home.png)
+
+### Resume Analysis
+
+![Resume Analysis](./public/images/analysis.png)
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+
+* Next.js 15
+* React
+* TypeScript
+* Tailwind CSS
+
+### AI
+
+* Gemini 2.5 Flash
+* Google GenAI SDK
+
+### PDF Processing
+
+* pdfreader
+
+### Future Enhancements
+
+* Prisma ORM
+* PostgreSQL
+* Authentication
+* Resume History
+* Job Description Matching
+* ATS Keyword Scanner
+
+---
+
+## 📂 Project Structure
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+src
+├── app
+│   ├── analyzer
+│   └── api
+│
+├── actions
+│   ├── analyzeResume.ts
+│   └── pdfParser.ts
+│
+├── lib
+│   ├── gemini.ts
+│   └── pdf.ts
+│
+├── components
+│   ├── upload
+│   ├── analysis
+│   └── ui
+│
+└── types
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## ⚙️ Installation
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Clone the repository:
 
-## Learn More
+```bash
+git clone <your-repository-url>
+cd ai-resume-analyzer
+```
 
-To learn more about Next.js, take a look at the following resources:
+Install dependencies:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+bun install
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Create an environment file:
 
-## Deploy on Vercel
+```bash
+cp .env.example .env.local
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Add your Gemini API key:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```env
+GEMINI_API_KEY=your_api_key_here
+```
+
+Run the development server:
+
+```bash
+bun run dev
+```
+
+Open:
+
+```txt
+http://localhost:3000
+```
+
+---
+
+## 🔄 How It Works
+
+1. User uploads a PDF resume.
+2. The application extracts text from the PDF using `pdfreader`.
+3. The extracted content is sent to Gemini.
+4. Gemini analyzes the resume and returns:
+
+   * ATS Score
+   * Strengths
+   * Weaknesses
+   * Suggestions
+5. Results are displayed in a clean dashboard.
+
+---
+
+## 📈 Roadmap
+
+### Phase 1
+
+* [x] PDF Upload
+* [x] PDF Text Extraction
+* [x] Gemini Integration
+* [x] Resume Analysis
+
+### Phase 2
+
+* [ ] Prisma Integration
+* [ ] PostgreSQL Database
+* [ ] Authentication
+* [ ] Resume History
+
+### Phase 3
+
+* [ ] Job Description Matching
+* [ ] ATS Keyword Analysis
+* [ ] Resume Rewriting
+* [ ] Cover Letter Generation
+
+### Phase 4
+
+* [ ] RAG-based Resume Search
+* [ ] Multi-resume Management
+* [ ] Advanced Analytics
+
+---
+
+## 🎯 Example Output
+
+```json
+{
+  "score": 84,
+  "strengths": [
+    "Strong React experience",
+    "Good project portfolio"
+  ],
+  "weaknesses": [
+    "Missing quantified achievements",
+    "No testing experience listed"
+  ],
+  "suggestions": [
+    "Add measurable impact metrics",
+    "Include testing frameworks and CI/CD tools"
+  ]
+}
+```
+
+---
+
+## 📄 License
+
+This project is open-source and available under the MIT License.
