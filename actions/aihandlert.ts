@@ -9,7 +9,7 @@ export async function AI_SDK(prompt : string) : Promise <string | undefined | nu
             model : 'gemini-2.5-flash-lite',
             contents : [{
                 parts : [{
-                    text : ''
+                    text : prompt
                 }]
             }]
         });

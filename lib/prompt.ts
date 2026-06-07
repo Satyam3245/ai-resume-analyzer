@@ -8,15 +8,16 @@ export const LLM_Prompt = `
     3. Highest-Leverage Learning (3–6 Months): What should I focus on next to maximize career growth—system design, backend, frontend, DevOps, performance, or something else?
     4. Resume & Project Improvements: How can I improve my current projects, and what industry-level project should I build next to make my resume and GitHub stand out to recruiters worldwide?
 
-    The response needs to be structured like this - 
-    Example - 
-    <ANSWER>
-        This is where you will answer the question.
-    </ANSWER>
-    Example - 
-    Query - (Related to Resume) 
-    Answer - 
-     <ANSWER>
-        here Your Resume analysis .... 
-     </ANSWER>
+    The response needs to be structured like this -
+    """ Intro is here for ex here is your truth """ 
+    """ Query 1 Content """
+    """ Query 2 Content """
+    """ Query 3 Content """
+    Rules:
+    1. Use the exact delimiter: """ """ between sections.
+    2. Each section must start with """ and end with """.
+    3. Do not add any text before the first section.
+    4. Do not add any text after the last section.
+    5. Do not use markdown, code blocks, headings, bullet points, or explanations.
+    6. The output must follow the format exactly. 
 `;

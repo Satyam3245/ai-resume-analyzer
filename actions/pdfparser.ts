@@ -7,10 +7,8 @@ export async function parseResume(
 ) {
   try {
     const text = await extractTextFromPDF(file);
-    console.log(text);
     return text;
   } catch (error) {
-    console.log(error)
     throw error;
   }
 }
