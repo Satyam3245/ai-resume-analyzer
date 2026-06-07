@@ -8,9 +8,8 @@ export default function Analyzer() {
   const [pdf, setPdf] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<string|null>(null);
-  const [resumeText,setResumetext] = useState<string|null>("");
-  // The result will come in """ """ this format so split this and store in the array and
-  // map in the DOM
+  const [resumeText,setResumeText] = useState<string|null>("");
+
   const handleFileChange = async (
     e: ChangeEvent<HTMLInputElement>
   ) => {
@@ -24,9 +23,10 @@ export default function Analyzer() {
       return;
     }
     const text = await parseResume(selectedFile);
-    setResumetext(text);
-    // what can i do this send to this user and let a user to sent to the AI cal and then
-    // render the ai response
+    setResumeText(text);
+  };
+
+  async function AI_HANDLER(text:string){
     const combinedPrompt = LLM_Prompt.replace('{{MY_PERSONAL_INFO}}',text);
     const aiResponse = await AI_SDK(combinedPrompt);
     if(typeof aiResponse === "string"){
@@ -34,9 +34,8 @@ export default function Analyzer() {
     }else {
       setError("Error Occured in AI Side");
     }
-    setError(null);
-    setPdf(selectedFile);
-  };
+  }
+
 
   return (
     <div>
@@ -71,14 +70,25 @@ export default function Analyzer() {
           </p>
         </div>
       )}
-
-      {result && (
-        <div className="mt-2">
-            <p className="text-blue-500">
-              {result}
-            </p>
+      {resumeText && (
+        <div>
+        <form onSubmit={(e)=>{
+          e.preventDefault();
+          AI_HANDLER(resumeText);
+        }}>
+          <input 
+           type="text"
+           value={resumeText} 
+           onChange={(e)=>{setResumeText(e.target.value)}}
+          />
+          <button type="submit">Generate AI Response</button>
+        </form>
+        {result && (
+          <div>{result}</div>
+        )}
         </div>
       )}
+      
     </div>
   );
 }
