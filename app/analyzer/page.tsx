@@ -6,10 +6,18 @@ import { LLM_Prompt } from "@/lib/prompt";
 import { ChangeEvent, useState } from "react";
 import { FileUp, Send } from 'lucide-react'
 
+interface result {
+  intro : string
+  careerDirection : string
+  gapAnalysis : string
+  learningPlan : string
+  resumeImprovements : string
+}
+
 export default function Analyzer() {
   const [pdf, setPdf] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [result, setResult] = useState<string|null>(null);
+  const [result, setResult] = useState<result|null>(null);
   const [resumeText,setResumeText] = useState<string|null>("");
 
   const handleFileChange = async (
@@ -33,7 +41,8 @@ export default function Analyzer() {
     const combinedPrompt = LLM_Prompt.replace('{{MY_PERSONAL_INFO}}',text);
     const aiResponse = await AI_SDK(combinedPrompt);
     if(typeof aiResponse === "string"){
-      setResult(aiResponse);
+      const data = JSON.parse(aiResponse);
+      setResult(data);
     }else {
       setError("Error Occured in AI Side");
     }
@@ -197,8 +206,48 @@ export default function Analyzer() {
           </form>
 
           {result && (
-            <div className="mt-6 p-6 rounded-2xl bg-zinc-900 border border-zinc-800 text-zinc-200">
-              {result}
+            <div className="max-w-4xl mx-auto mt-8">
+              <h1 className="text-4xl font-bold text-white mb-8">
+                {result.intro}
+              </h1>
+
+              <div className="space-y-6">
+                <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6">
+                  <h2 className="text-xl font-semibold text-blue-400 mb-3">
+                    Career Direction
+                  </h2>
+                  <p className="text-zinc-300 leading-relaxed">
+                    {result.careerDirection}
+                  </p>
+                </div>
+
+                <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6">
+                  <h2 className="text-xl font-semibold text-purple-400 mb-3">
+                    Remote-Readiness Gap Analysis
+                  </h2>
+                  <p className="text-zinc-300 leading-relaxed">
+                    {result.gapAnalysis}
+                  </p>
+                </div>
+
+                <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6">
+                  <h2 className="text-xl font-semibold text-green-400 mb-3">
+                    Highest-Leverage Learning
+                  </h2>
+                  <p className="text-zinc-300 leading-relaxed">
+                    {result.learningPlan}
+                  </p>
+                </div>
+
+                <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6">
+                  <h2 className="text-xl font-semibold text-orange-400 mb-3">
+                    Resume & Project Improvements
+                  </h2>
+                  <p className="text-zinc-300 leading-relaxed">
+                    {result.resumeImprovements}
+                  </p>
+                </div>
+              </div>
             </div>
           )}
         </div>
