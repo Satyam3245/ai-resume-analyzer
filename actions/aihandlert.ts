@@ -20,3 +20,12 @@ export async function AI_SDK(prompt : string) : Promise <string | undefined | nu
     }
 
 } 
+
+
+export async function JOB_SDK(){
+    try {
+        
+    } catch (error) {
+        
+    }
+}

@@ -11,6 +11,7 @@ export const LLM_Prompt = `
     The response needs to be structured like this -
     {
         "intro": "",
+        "jobRole" : "",
         "careerDirection": "",
         "gapAnalysis": "",
         "learningPlan": "",
@@ -19,6 +20,7 @@ export const LLM_Prompt = `
 
     Do not include markdown.
     Do not include backticks.
+    Try to give the jobRole in two  words
     Do not include explanations.
     Return only JSON.
 `;

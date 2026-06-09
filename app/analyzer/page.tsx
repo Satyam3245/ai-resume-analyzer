@@ -5,13 +5,24 @@ import InfoSection from "@/components/info";
 import { LLM_Prompt } from "@/lib/prompt";
 import { ChangeEvent, useState } from "react";
 import { FileUp, Send } from 'lucide-react'
+import { Button } from "@/components/ui/button";
+import jobSearch from "@/actions/tavilyhandler";
+import Link from "next/link";
 
 interface result {
   intro : string
   careerDirection : string
+  jobRole : string
   gapAnalysis : string
   learningPlan : string
   resumeImprovements : string
+}
+
+interface jobResult {
+  url : string
+  title : string
+  content : string
+  score : number
 }
 
 export default function Analyzer() {
@@ -19,6 +30,7 @@ export default function Analyzer() {
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<result|null>(null);
   const [resumeText,setResumeText] = useState<string|null>("");
+  const [jobs,setJobs] = useState<jobResult[]|null>(null);
 
   const handleFileChange = async (
     e: ChangeEvent<HTMLInputElement>
@@ -43,12 +55,21 @@ export default function Analyzer() {
     if(typeof aiResponse === "string"){
       const data = JSON.parse(aiResponse);
       setResult(data);
+      console.log("Data is ",result?.jobRole);
     }else {
       setError("Error Occured in AI Side");
     }
   }
 
-
+  async function handleJobSearch(){
+    try {
+      const jobResult = await jobSearch(result?.jobRole!);
+      setJobs(jobResult)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  
   return (
     <div>
       {!resumeText && (
@@ -248,11 +269,41 @@ export default function Analyzer() {
                   </p>
                 </div>
               </div>
+              <Button
+                onClick={handleJobSearch}
+                variant="jobType"
+              >
+                🚀 Suggest Me Some Jobs For My Role
+              </Button>
             </div>
           )}
         </div>
       )}
-      
+      {jobs && (
+          <div className="max-w-4xl mx-auto flex flex-col gap-4">
+            {jobs.map((job) => (
+              <Button
+                key={job.score}
+                asChild
+                className="h-auto w-full justify-start bg-gray-700 p-4 text-white hover:bg-gray-600"
+              >
+                <Link
+                  href={job.url}
+                  target="_blank"
+                  className="flex flex-col items-start gap-2"
+                >
+                  <h1 className="text-lg font-semibold">
+                    {job.title.slice(0, 35)}
+                  </h1>
+
+                  <h4 className="text-sm text-gray-200">
+                    {job.content.slice(0, 50)}
+                  </h4>
+                </Link>
+              </Button>
+            ))}
+          </div>
+        )}
     </div>
   );
 }
