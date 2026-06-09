@@ -8,6 +8,7 @@ import { FileUp, Send } from 'lucide-react'
 import { Button } from "@/components/ui/button";
 import jobSearch from "@/actions/tavilyhandler";
 import Link from "next/link";
+import { speakResult } from "@/actions/texttospeech";
 
 interface result {
   intro : string
@@ -228,6 +229,9 @@ export default function Analyzer() {
 
           {result && (
             <div className="max-w-4xl mx-auto mt-8">
+              <button onClick={()=>{
+                speakResult(result)
+              }}>Speak</button>
               <h1 className="text-4xl font-bold text-white mb-8">
                 {result.intro}
               </h1>
