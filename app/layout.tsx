@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { DM_Sans, Geist, Geist_Mono, Lora } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider"
+import Footer from "@/components/footer";
+import { Header } from "@/components/Header";
 
 const lora = Lora({
   subsets : ["latin"],
@@ -41,10 +43,10 @@ export default function RootLayout({
             disableTransitionOnChange
           >
         <main className="min-h-screen">
-          {/* <Header/> */}
+          <Header/>
           {children}
         </main>
-        {/* <Footer/> */}
+        <Footer/>
         </ThemeProvider> 
       </body>
     </html>
