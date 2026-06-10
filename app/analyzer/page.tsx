@@ -8,7 +8,6 @@ import { FileUp, Send } from 'lucide-react'
 import { Button } from "@/components/ui/button";
 import jobSearch from "@/actions/tavilyhandler";
 import Link from "next/link";
-import { speakResult } from "@/actions/texttospeech";
 
 interface result {
   intro : string
@@ -70,6 +69,33 @@ export default function Analyzer() {
       console.log(error)
     }
   }
+
+
+  
+ function speakResult(result: result, index = 0) {
+  const sections = [
+    result.intro,
+    result.careerDirection,
+    result.jobRole,
+    result.gapAnalysis,
+    result.learningPlan,
+    result.resumeImprovements,
+  ];
+
+  if (index >= sections.length) return;
+
+  const utterance = new SpeechSynthesisUtterance(sections[index]);
+
+  utterance.onend = () => {
+    speakResult(result, index + 1);
+  };
+
+  speechSynthesis.speak(utterance);
+ 
+}
+function cancelSpeakResult(){
+  speechSynthesis.cancel();
+}
   
   return (
     <div>
@@ -229,9 +255,12 @@ export default function Analyzer() {
 
           {result && (
             <div className="max-w-4xl mx-auto mt-8">
-              <button onClick={()=>{
-                speakResult(result)
-              }}>Speak</button>
+              <div className="flex gap-8">
+                <button onClick={()=>{
+                  speakResult(result)
+                }}>Speak</button>
+                <button onClick={()=>{cancelSpeakResult}}>Stop</button>
+              </div>
               <h1 className="text-4xl font-bold text-white mb-8">
                 {result.intro}
               </h1>
