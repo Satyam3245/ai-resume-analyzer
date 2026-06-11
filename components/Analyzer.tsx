@@ -4,26 +4,14 @@ import { parseResume } from "@/actions/pdfparser";
 import InfoSection from "@/components/info";
 import { LLM_Prompt } from "@/lib/prompt";
 import { ChangeEvent, useState } from "react";
-import { FileUp, Send } from 'lucide-react'
+import { FileUp, Send, Speaker, StopCircle } from 'lucide-react'
 import { Button } from "@/components/ui/button";
 import jobSearch from "@/actions/tavilyhandler";
 import Link from "next/link";
-
-interface result {
-  intro : string
-  careerDirection : string
-  jobRole : string
-  gapAnalysis : string
-  learningPlan : string
-  resumeImprovements : string
-}
-
-interface jobResult {
-  url : string
-  title : string
-  content : string
-  score : number
-}
+import { jobResult, result } from "@/lib/type";
+import { cancelSpeakResult } from "@/actions/texttospeech";
+import { Speech } from 'lucide-react';
+import { CircleStop } from 'lucide-react';
 
 export default function Analyzer() {
   const [pdf, setPdf] = useState<File | null>(null);
@@ -50,12 +38,10 @@ export default function Analyzer() {
   };
 
   async function AI_HANDLER(text:string){
-    const combinedPrompt = LLM_Prompt.replace('{{MY_PERSONAL_INFO}}',text);
-    const aiResponse = await AI_SDK(combinedPrompt);
+    const aiResponse = await AI_SDK(text);
     if(typeof aiResponse === "string"){
       const data = JSON.parse(aiResponse);
       setResult(data);
-      console.log("Data is ",result?.jobRole);
     }else {
       setError("Error Occured in AI Side");
     }
@@ -85,7 +71,7 @@ export default function Analyzer() {
   if (index >= sections.length) return;
 
   const utterance = new SpeechSynthesisUtterance(sections[index]);
-
+  utterance.rate = 1.6
   utterance.onend = () => {
     speakResult(result, index + 1);
   };
@@ -93,12 +79,9 @@ export default function Analyzer() {
   speechSynthesis.speak(utterance);
  
 }
-function cancelSpeakResult(){
-  speechSynthesis.cancel();
-}
   
   return (
-    <div>
+    <div className="py-10">
       {!resumeText && (
         <div className="min-h-screen flex items-center justify-center bg-black px-4">
         <div className="w-full max-w-3xl rounded-3xl border border-blue-500/20 bg-zinc-900/80 backdrop-blur-lg shadow-2xl shadow-blue-500/10 p-8">
@@ -255,12 +238,22 @@ function cancelSpeakResult(){
 
           {result && (
             <div className="max-w-4xl mx-auto mt-8">
-              <div className="flex gap-8">
-                <button onClick={()=>{
-                  speakResult(result)
-                }}>Speak</button>
-                <button onClick={()=>{cancelSpeakResult}}>Stop</button>
-              </div>
+              <div className="flex w-full gap-4 py-3">
+                <button
+                    onClick={() => speakResult(result)}
+                    className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-red-600 px-6 py-3 font-semibold text-white shadow-md transition-all duration-200 hover:bg-red-700 hover:shadow-lg active:scale-95"
+                >
+                    Speak
+                    <Speaker/>
+                </button>
+                <button
+                    onClick={cancelSpeakResult}
+                    className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-red-600 px-6 py-3 font-semibold text-white shadow-md transition-all duration-200 hover:bg-red-700 hover:shadow-lg active:scale-95"
+                >
+                    Stop
+                    <StopCircle/>
+                </button>
+            </div>
               <h1 className="text-4xl font-bold text-white mb-8">
                 {result.intro}
               </h1>
@@ -323,14 +316,15 @@ function cancelSpeakResult(){
                 <Link
                   href={job.url}
                   target="_blank"
+                  rel="noopener noreferrer"
                   className="flex flex-col items-start gap-2"
                 >
                   <h1 className="text-lg font-semibold">
-                    {job.title.slice(0, 35)}
+                    {job.title.slice(0, 60)}
                   </h1>
 
                   <h4 className="text-sm text-gray-200">
-                    {job.content.slice(0, 50)}
+                    {job.content.slice(0, 60)}...
                   </h4>
                 </Link>
               </Button>
