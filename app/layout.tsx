@@ -4,7 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider"
 import Footer from "@/components/footer";
 import { Header } from "@/components/Header";
-
+import AuthProvider from '../components/sessionProvider';
 const lora = Lora({
   subsets : ["latin"],
   weight : ["400","500"],
@@ -36,18 +36,13 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">
-        <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-        <main className="min-h-screen">
+      <AuthProvider>
+        <main className="min-h-screen bg-black">
           <Header/>
           {children}
         </main>
         <Footer/>
-        </ThemeProvider> 
+      </AuthProvider>
       </body>
     </html>
   );
