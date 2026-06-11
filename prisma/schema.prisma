@@ -6,3 +6,25 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+model User{
+  id          String @id @default(uuid())
+  email       String @unique
+  provider     Provider
+  createdAt    DateTime @default(now())
+  file         Files[]
+}
+
+model Files{
+  id          String @id @default(uuid())
+  file        Bytes  @db.ByteA
+  createdAt    DateTime @default(now())
+  userId      String
+  user        User @relation(fields: [userId],references: [id])
+}
+
+
+enum Provider {
+  GOOGLE
+  GITHUB
+}
