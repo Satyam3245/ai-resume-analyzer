@@ -20,11 +20,17 @@ An AI-powered Resume Analyzer built with **Next.js**, **TypeScript**, **Gemini**
 
 ### Home Page
 
-![Home Page](./public/images/home.png)
+![Home Page](./public/images/airesumeanalyzer.PNG)
 
 ### Resume Analysis
 
-![Resume Analysis](./public/images/analysis.png)
+![Resume Analysis](./public/images/airesumeanalyzeranalyzer.PNG)
+
+---
+
+### Job Results
+
+![Resume Analysis](./public/images/airesumeanalyzeranalyzerjob.PNG)
 
 ---
 
